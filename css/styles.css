@@ -1180,6 +1180,84 @@ section {
     color: var(--accent-primary);
 }
 
+/* Footer Credits */
+.footer-credits {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(100, 255, 218, 0.1);
+}
+
+.cursor-credit {
+    color: var(--text-secondary);
+    font-size: 13px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.cursor-credit i {
+    color: var(--accent-primary);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.cursor-link {
+    color: var(--accent-primary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: var(--transition);
+    position: relative;
+}
+
+.cursor-link:hover {
+    color: var(--accent-secondary);
+}
+
+.cursor-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+    transition: width 0.3s ease;
+}
+
+.cursor-link:hover::after {
+    width: 100%;
+}
+
+.tech-stack {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.tech-badge {
+    background-color: rgba(100, 255, 218, 0.1);
+    color: var(--accent-primary);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-family: 'Courier New', monospace;
+    font-weight: 600;
+    border: 1px solid rgba(100, 255, 218, 0.2);
+    transition: var(--transition);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.tech-badge:hover {
+    background-color: rgba(100, 255, 218, 0.2);
+    border-color: var(--accent-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(100, 255, 218, 0.2);
+}
+
 /* ===========================
    Responsive Design
    =========================== */
@@ -1306,5 +1384,16 @@ section {
     .btn {
         width: 100%;
         justify-content: center;
+    }
+
+    .cursor-credit {
+        font-size: 11px;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .tech-badge {
+        font-size: 10px;
+        padding: 5px 10px;
     }
 }
