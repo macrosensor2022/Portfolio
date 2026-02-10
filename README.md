@@ -12,8 +12,6 @@
 
 [View Live Portfolio](https://macrosensor2022.github.io/Portfolio) • [Download Resume](assets/resume.pdf) • [Contact Me](mailto:sjvinay357@gmail.com)
 
-![Portfolio Preview](assets/profile.jpg)
-
 </div>
 
 ---
