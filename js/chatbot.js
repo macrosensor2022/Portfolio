@@ -1,118 +1,434 @@
 // ===========================
-// Terminal-Style AI Chatbot
+// Agent47 - Enhanced Rule-Based AI System
 // ===========================
 
-class PortfolioBot {
+class Agent47AI {
     constructor() {
         this.isOpen = false;
-        this.conversationContext = [];
-        this.lastTopic = null;
+        this.conversationHistory = [];
+        this.currentMode = 'standard'; // standard, quiz, compare, deep-dive
+        this.askedQuestions = new Set();
+        this.userInterests = [];
+        this.questionCount = 0;
         
-        // Comprehensive knowledge base
-        this.knowledge = {
-            // Personal Info
-            name: "Vinay Varshigan S.J",
-            location: "Portland, Maine",
-            email: "sjvinay357@gmail.com",
-            phone: "+1 (774) 457-0864",
-            linkedin: "linkedin.com/in/vinaysj2003",
-            github: "github.com/macrosensor2022",
-            
-            // Education
-            currentDegree: "MS in Computer Science",
-            university: "Northeastern University",
-            gpa: "4.0",
-            role: "Teaching Assistant for Algorithms (CS5800)",
-            previousDegree: "Bachelor of Engineering in Computer Science",
-            previousUniversity: "Anna University",
-            
-            // Skills
-            languages: ["Python", "Java", "SQL"],
-            mlSkills: ["Machine Learning", "Deep Learning", "CNNs", "Transformers", "NLP", "PyTorch", "TensorFlow", "BERT", "ResNet50"],
-            dataEngineering: ["ETL Pipelines", "MySQL", "SQL Optimization", "Docker", "Linux"],
-            cloud: ["AWS", "EC2", "VPC", "Auto Scaling"],
-            analytics: ["Power BI", "DAX", "Pandas", "NumPy", "Matplotlib", "Seaborn"],
-            tools: ["Git", "REST APIs", "Postman", "Scikit-learn"],
-            
-            // Experience highlights
-            experiences: {
-                current: "Teaching Assistant at Northeastern University (Jan 2026 - Present)",
-                besant: "Data Scientist Intern at Besant Technologies (Feb 2025 - Aug 2025) - 60% processing time reduction, 20% query latency improvement",
-                cyberhub: "Secretary & Creative Group Head at SVCE CyberHub (Apr 2023 - Dec 2024) - 3x social media engagement",
-                bluebase: "Software Developer Intern at Bluebase (Jun 2023 - Jul 2023) - AWS infrastructure deployment"
-            },
-            
-            // Projects
-            projects: {
-                pocketForecaster: "AI Smartphone Recommendation with 89% accuracy using Java, BERT, VADER, NLP",
-                logClassification: "Log Classification System with 99% accuracy using Python, BERT, DBSCAN",
-                wildlifeDetection: "Wildlife Detection & Emergency System using ResNet50, Transformers, IoT sensors, ESP32",
-                smartFood: "Smart Food & Allergen Detection with 93% accuracy using ResNet50, InceptionV3",
-                retailDashboard: "Retail Sales Dashboard using Power BI, DAX",
-                ecommerce: "E-commerce Text Classification using FastText"
-            },
-            
-            // Publications
-            publications: [
-                "Routledge book chapter on blockchain, smart contracts, and AI-based fraud detection",
-                "Best Paper Award for heart disease prediction (83% accuracy)",
-                "Patent under review for AWS-deployed IoT water monitoring system"
-            ],
-            
-            // Certifications
-            certifications: ["AWS Cloud Essentials", "Introduction to IoT - NPTEL IIT", "Foundations of Software Engineering - NEU"],
-            
-            // Availability
-            availability: true,
-            lookingFor: ["NLP", "Software Engineering", "AI/ML Internships"],
-            
-            // Achievements
-            achievements: [
-                "Perfect 4.0 GPA at Northeastern University",
-                "60% reduction in data processing time",
-                "20% SQL query latency improvement",
-                "3x increase in social media engagement",
-                "99% accuracy in log classification",
-                "Best Paper Award winner"
-            ]
-        };
+        // Enhanced Knowledge Graph
+        this.knowledgeGraph = this.buildKnowledgeGraph();
         
-        this.responses = {
-            greetings: [
-                "🕵️ Agent47 here. Mission: Brief you on Vinay Varshigan. What intel do you need - skills, projects, or experience?",
-                "Agent47 reporting. I have comprehensive data on Vinay's capabilities. What information are you seeking?",
-                "Target acquired. 🎯 I'm Agent47, your intelligence source on Vinay Varshigan. How can I assist?"
-            ],
-            goodbye: [
-                "🕵️ Mission complete. Agent47 signing off. Contact Vinay directly for mission briefing! 🚀",
-                "Agent47 out. Don't forget to review the project files and establish contact with Vinay. Over and out! 👋"
-            ],
-            jokes: [
-                "Why do programmers prefer dark mode? Because light attracts bugs! 🐛😄",
-                "How many programmers does it take to change a light bulb? None. It's a hardware problem! 💡",
-                "Why did Vinay automate everything? Because manual work is so 2020! 🤖",
-                "Why do Java developers wear glasses? Because they don't C#! 😎",
-                "A SQL query walks into a bar, walks up to two tables and asks... 'Can I JOIN you?' 🍺"
-            ],
-            thanks: [
-                "🕵️ Roger that. Agent47 standing by for further inquiries.",
-                "Mission acknowledged. Any additional intelligence needed?",
-                "Copy that. Agent47 ready for next query."
-            ],
-            appreciation: [
-                "Thank you! Vinay has worked really hard on his skills and projects! 🌟",
-                "I'll pass that along! Vinay would love to hear from you directly at sjvinay357@gmail.com!",
-                "Thanks for the kind words! Feel free to connect with Vinay on LinkedIn or via email!"
-            ]
-        };
+        // Rule Engine
+        this.rules = this.initializeRules();
         
+        // Dynamic Question Generator
+        this.questionBank = this.generateQuestionBank();
+        
+        // Initialize
         this.init();
     }
 
+    buildKnowledgeGraph() {
+        return {
+            personal: {
+                name: "Vinay Varshigan S.J",
+                location: "Portland, Maine",
+                email: "sjvinay357@gmail.com",
+                phone: "+1 (774) 457-0864",
+                linkedin: "linkedin.com/in/vinaysj2003",
+                github: "github.com/macrosensor2022",
+                funFact: "Automated data validation so well, saved 60% processing time - now automates even coffee breaks!",
+                personality: ["analytical", "creative", "problem-solver", "team-player"]
+            },
+            
+            education: {
+                current: {
+                    degree: "MS in Computer Science",
+                    university: "Northeastern University",
+                    gpa: "4.0",
+                    status: "In Progress",
+                    role: "Teaching Assistant for Algorithms (CS5800)",
+                    courses: ["Algorithms", "NLP", "Programming Design Paradigms", "Software Engineering"],
+                    startDate: "Sep 2025",
+                    highlights: ["Perfect GPA", "TA Role", "Graduate Level"]
+                },
+                previous: {
+                    degree: "BE in Computer Science",
+                    university: "Anna University",
+                    gpa: "3.2",
+                    period: "2021-2025"
+                }
+            },
+            
+            skills: {
+                programming: {
+                    expert: ["Python", "Java", "SQL"],
+                    proficient: ["JavaScript", "HTML", "CSS"],
+                    frameworks: ["PyTorch", "TensorFlow", "Scikit-learn"]
+                },
+                aiml: {
+                    techniques: ["Deep Learning", "Machine Learning", "NLP", "Computer Vision"],
+                    models: ["BERT", "ResNet50", "InceptionV3", "Transformers", "CNNs"],
+                    accuracy: ["99% log classification", "93% food detection", "89% sentiment analysis", "83% heart disease prediction"],
+                    specialization: "NLP and Computer Vision"
+                },
+                dataEngineering: {
+                    pipelines: ["ETL", "Data Validation", "Feature Engineering"],
+                    databases: ["MySQL", "SQL Optimization"],
+                    tools: ["Docker", "Linux", "Git"],
+                    achievements: ["60% faster processing", "20% latency reduction"]
+                },
+                cloud: {
+                    platform: "AWS",
+                    services: ["EC2", "VPC", "Auto Scaling"],
+                    certifications: ["AWS Cloud Essentials"]
+                },
+                analytics: {
+                    tools: ["Power BI", "Pandas", "NumPy", "Matplotlib", "Seaborn"],
+                    skills: ["DAX", "Data Visualization", "KPI Dashboards"]
+                }
+            },
+            
+            experience: [
+                {
+                    role: "Teaching Assistant",
+                    company: "Northeastern University",
+                    course: "Algorithms (CS5800)",
+                    period: "Jan 2026 - Present",
+                    type: "current",
+                    responsibilities: ["Supporting graduate students", "Office hours", "Grading", "Course material development"],
+                    impact: "Helping students master advanced algorithms"
+                },
+                {
+                    role: "Data Scientist Intern",
+                    company: "Besant Technologies",
+                    location: "Chennai, India",
+                    period: "Feb 2025 - Aug 2025",
+                    type: "internship",
+                    achievements: [
+                        "60% reduction in processing time",
+                        "20% improvement in query latency",
+                        "Automated data validation pipelines",
+                        "Created interactive Power BI dashboards"
+                    ],
+                    skills: ["Python", "Pandas", "NumPy", "SQL", "Power BI"]
+                },
+                {
+                    role: "Secretary & Creative Group Head",
+                    company: "SVCE CyberHub",
+                    period: "Apr 2023 - Dec 2024",
+                    type: "leadership",
+                    achievements: [
+                        "3x increase in social media engagement",
+                        "Led cross-functional teams",
+                        "Organized hackathons and technical events"
+                    ]
+                },
+                {
+                    role: "Software Developer Intern",
+                    company: "Bluebase Software Solutions",
+                    period: "Jun 2023 - Jul 2023",
+                    type: "internship",
+                    achievements: [
+                        "Designed scalable AWS infrastructure",
+                        "Automated deployment workflows",
+                        "Improved system reliability"
+                    ],
+                    skills: ["AWS", "VPC", "EC2", "Auto Scaling", "Linux"]
+                }
+            ],
+            
+            projects: [
+                {
+                    name: "Pocket Forecaster",
+                    category: "AI/ML",
+                    description: "AI-powered smartphone recommendation engine",
+                    tech: ["Java", "BERT", "VADER", "NLP", "MVC Pattern", "Strategy Pattern"],
+                    accuracy: "89%",
+                    features: ["Sentiment analysis", "Budget filtering", "Add-on recommendations"],
+                    impact: "Helps users make informed smartphone purchases",
+                    github: "pocket_forecaster"
+                },
+                {
+                    name: "Log Classification System",
+                    category: "NLP",
+                    description: "Hybrid multi-stage log classification pipeline",
+                    tech: ["Python", "BERT", "SentenceTransformers", "DBSCAN", "Regex"],
+                    accuracy: "99%",
+                    categories: 9,
+                    features: ["Semantic clustering", "Real-time classification", "Multi-class support"],
+                    impact: "Automated system log analysis",
+                    github: "Log_classification_system_NLP_Personal_project"
+                },
+                {
+                    name: "Wildlife Detection & Emergency System",
+                    category: "Computer Vision / IoT",
+                    description: "Real-time wildlife detection for tribal safety",
+                    tech: ["Python", "ResNet50", "Transformers", "PyTorch", "ESP32-CAM", "IoT", "RF Networks"],
+                    features: ["Animal classification", "Danger level prediction", "Offline alerts", "SOS integration"],
+                    impact: "Protecting tribal communities in remote regions",
+                    github: "wild-animal-detection-and-emergency-system"
+                },
+                {
+                    name: "Smart Food Solutions",
+                    category: "Computer Vision",
+                    description: "AI-based food and allergen detection",
+                    tech: ["Python", "ResNet50", "InceptionV3", "Nutritionix API"],
+                    accuracy: "93%",
+                    features: ["Real-time detection", "Allergen identification", "Nutritional insights"],
+                    impact: "Helping people with food allergies stay safe"
+                },
+                {
+                    name: "Retail Sales Dashboard",
+                    category: "Data Analytics",
+                    description: "Interactive Power BI dashboard",
+                    tech: ["Power BI", "DAX", "Data Visualization"],
+                    features: ["Sales tracking", "KPI monitoring", "Professional layouts"],
+                    impact: "Improved business decision-making"
+                },
+                {
+                    name: "E-commerce Text Classification",
+                    category: "NLP",
+                    description: "Scalable product classification system",
+                    tech: ["Python", "FastText", "Subword Embeddings"],
+                    features: ["Fast training", "Typo handling", "Multi-class classification"],
+                    impact: "Production-ready e-commerce solution"
+                }
+            ],
+            
+            publications: [
+                {
+                    type: "book_chapter",
+                    title: "Blockchain, Smart Contracts, and AI-Based Fraud Detection",
+                    publisher: "Routledge",
+                    status: "Published",
+                    category: "AI/Blockchain"
+                },
+                {
+                    type: "paper",
+                    title: "Heart Disease Prediction Using Machine Learning",
+                    award: "Best Paper Award",
+                    accuracy: "83%",
+                    models: ["Decision Tree", "Naive Bayes", "Random Forest"],
+                    status: "Published"
+                },
+                {
+                    type: "patent",
+                    title: "AWS-Deployed IoT Water Monitoring System",
+                    status: "Under Review",
+                    category: "IoT/Cloud"
+                }
+            ],
+            
+            certifications: [
+                {name: "AWS Cloud Essentials", provider: "Amazon Web Services", verified: true},
+                {name: "Introduction to IoT", provider: "NPTEL IIT", verified: true},
+                {name: "Foundations of Software Engineering", provider: "Northeastern University", verified: true}
+            ],
+            
+            interests: {
+                technical: ["NLP", "Computer Vision", "Data Engineering", "Cloud Architecture"],
+                domains: ["Healthcare AI", "IoT Systems", "E-commerce", "Wildlife Conservation"],
+                learning: ["Advanced Transformers", "Cloud-Native Architecture", "MLOps"]
+            },
+            
+            availability: {
+                status: true,
+                lookingFor: ["NLP Internships", "Software Engineering Internships", "AI/ML Internships"],
+                type: "Internship",
+                startDate: "Flexible"
+            }
+        };
+    }
+
+    initializeRules() {
+        return {
+            // Intent Recognition Rules
+            intents: {
+                greeting: {
+                    patterns: ['hi', 'hello', 'hey', 'greetings', 'good morning', 'good afternoon', 'sup', 'yo', 'howdy'],
+                    confidence: 0.9,
+                    action: 'respondGreeting'
+                },
+                farewell: {
+                    patterns: ['bye', 'goodbye', 'see you', 'later', 'gotta go', 'exit', 'quit'],
+                    confidence: 0.9,
+                    action: 'respondFarewell'
+                },
+                thanks: {
+                    patterns: ['thanks', 'thank you', 'thx', 'appreciate', 'helpful', 'great'],
+                    confidence: 0.8,
+                    action: 'respondThanks'
+                },
+                compliment: {
+                    patterns: ['impressive', 'amazing', 'awesome', 'wow', 'cool', 'nice', 'excellent', 'outstanding', 'good work'],
+                    confidence: 0.7,
+                    action: 'respondCompliment'
+                },
+                
+                // Question Intents
+                skills_query: {
+                    patterns: ['skill', 'technology', 'tech stack', 'programming', 'language', 'know', 'proficient', 'expertise', 'good at', 'capabilities'],
+                    confidence: 0.85,
+                    action: 'respondSkills'
+                },
+                experience_query: {
+                    patterns: ['experience', 'work', 'job', 'internship', 'worked', 'career', 'employment', 'companies', 'role'],
+                    confidence: 0.85,
+                    action: 'respondExperience'
+                },
+                project_query: {
+                    patterns: ['project', 'built', 'created', 'developed', 'portfolio', 'work sample'],
+                    confidence: 0.85,
+                    action: 'respondProjects'
+                },
+                education_query: {
+                    patterns: ['education', 'degree', 'university', 'college', 'gpa', 'study', 'student', 'school', 'academic'],
+                    confidence: 0.85,
+                    action: 'respondEducation'
+                },
+                contact_query: {
+                    patterns: ['contact', 'email', 'phone', 'reach', 'connect', 'linkedin', 'github', 'get in touch'],
+                    confidence: 0.9,
+                    action: 'respondContact'
+                },
+                availability_query: {
+                    patterns: ['hire', 'hiring', 'job', 'opportunity', 'available', 'open to work', 'looking for', 'position', 'role'],
+                    confidence: 0.85,
+                    action: 'respondAvailability'
+                },
+                publication_query: {
+                    patterns: ['publication', 'paper', 'research', 'published', 'patent', 'book', 'award', 'wrote'],
+                    confidence: 0.8,
+                    action: 'respondPublications'
+                },
+                certification_query: {
+                    patterns: ['certification', 'certified', 'certificate', 'credential', 'badge', 'qualified'],
+                    confidence: 0.8,
+                    action: 'respondCertifications'
+                },
+                
+                // Comparison Intents
+                comparison: {
+                    patterns: ['compare', 'difference', 'versus', 'vs', 'better', 'which', 'prefer', 'choose'],
+                    confidence: 0.7,
+                    action: 'handleComparison'
+                },
+                
+                // Special Modes
+                quiz_request: {
+                    patterns: ['quiz', 'test', 'question me', 'ask me', 'challenge'],
+                    confidence: 0.9,
+                    action: 'startQuizMode'
+                },
+                help_request: {
+                    patterns: ['help', 'what can you', 'how to use', 'commands', 'what do you do'],
+                    confidence: 0.9,
+                    action: 'respondHelp'
+                },
+                random: {
+                    patterns: ['random', 'surprise', 'anything', 'something', 'tell me more'],
+                    confidence: 0.6,
+                    action: 'respondRandom'
+                },
+                joke_request: {
+                    patterns: ['joke', 'funny', 'laugh', 'humor', 'make me laugh'],
+                    confidence: 0.9,
+                    action: 'respondJoke'
+                }
+            },
+            
+            // Context-Aware Rules
+            contextRules: {
+                followUp: {
+                    condition: (history) => history.length > 1,
+                    action: 'handleFollowUp'
+                },
+                clarification: {
+                    condition: (msg) => msg.includes('?') && msg.split(' ').length < 4,
+                    action: 'requestClarification'
+                },
+                multipleTopics: {
+                    condition: (msg) => msg.includes(' and ') || msg.includes(' & '),
+                    action: 'handleMultipleTopics'
+                }
+            },
+            
+            // Response Enhancement Rules
+            enhancementRules: {
+                addSuggestions: true,
+                includeRelated: true,
+                personalizeResponse: true,
+                trackInterests: true
+            }
+        };
+    }
+
+    generateQuestionBank() {
+        return {
+            skills: [
+                "What programming languages does Vinay know?",
+                "Tell me about his machine learning skills",
+                "What AI models has he worked with?",
+                "Does he have cloud computing experience?",
+                "What data engineering tools does he use?",
+                "How proficient is he in Python?",
+                "What's his expertise in NLP?",
+                "Tell me about his AWS experience"
+            ],
+            projects: [
+                "What's the most impressive project he's built?",
+                "Tell me about the Pocket Forecaster project",
+                "How did he achieve 99% accuracy in log classification?",
+                "What's unique about the wildlife detection system?",
+                "Which project uses computer vision?",
+                "What real-world problems has he solved?",
+                "Tell me about his IoT projects"
+            ],
+            experience: [
+                "Where has Vinay worked?",
+                "What did he accomplish at Besant Technologies?",
+                "Tell me about his teaching assistant role",
+                "What leadership experience does he have?",
+                "How did he improve data processing by 60%?",
+                "What companies has he interned at?"
+            ],
+            education: [
+                "What's Vinay's GPA?",
+                "Where is he studying now?",
+                "What courses is he taking?",
+                "Tell me about his academic achievements",
+                "What degree is he pursuing?"
+            ],
+            publications: [
+                "Has Vinay published any research?",
+                "What awards has he won?",
+                "Tell me about his Routledge publication",
+                "Does he have any patents?"
+            ],
+            personal: [
+                "What's Vinay's fun fact?",
+                "What are his interests?",
+                "Is he a team player?",
+                "What makes him unique?",
+                "What's his personality like?"
+            ],
+            availability: [
+                "Is Vinay looking for a job?",
+                "What kind of positions is he seeking?",
+                "How can I hire him?",
+                "When can he start?"
+            ],
+            comparison: [
+                "Compare his Python and Java skills",
+                "What's the difference between his projects?",
+                "ML vs Data Engineering - which is his strength?",
+                "Which project had the highest accuracy?"
+            ]
+        };
+    }
+
     init() {
+        console.log('🕵️ Agent47 Enhanced AI System Initializing...');
         this.createChatbotHTML();
         this.attachEventListeners();
-        this.loadChatHistory();
+        console.log('✅ Agent47 online. Advanced rule-based system ready.');
     }
 
     createChatbotHTML() {
@@ -132,7 +448,7 @@ class PortfolioBot {
                             <h4>Agent47</h4>
                             <span class="chatbot-status">
                                 <span class="status-dot"></span>
-                                Active Mission
+                                <span id="chatbot-mode">Intel Mode</span>
                             </span>
                         </div>
                     </div>
@@ -148,14 +464,16 @@ class PortfolioBot {
 
                 <div class="chatbot-messages" id="chatbot-messages">
                     <div class="chatbot-welcome">
-                        <div class="terminal-prompt-chat">agent47@mission:~$</div>
-                        <p>🕵️ Agent47 Activated - Intel on Vinay Varshigan</p>
-                        <p style="font-size: 12px; color: var(--text-secondary); margin-top: 10px;">Mission Briefing: Extract information about skills, projects, experience, and more.</p>
+                        <div class="terminal-prompt-chat">agent47@intel:~$</div>
+                        <p>🕵️ Agent47 Enhanced AI Activated</p>
+                        <p style="font-size: 12px; color: var(--text-secondary); margin-top: 10px;">
+                            Advanced rule-based system ready. Try quiz mode, comparisons, or ask anything!
+                        </p>
                         <div class="quick-actions">
-                            <button class="quick-action" data-msg="Tell me about Vinay's skills">💻 Skills Intel</button>
-                            <button class="quick-action" data-msg="What projects has Vinay worked on?">🚀 Project Files</button>
-                            <button class="quick-action" data-msg="Tell me about his experience">💼 Career Log</button>
-                            <button class="quick-action" data-msg="How can I contact Vinay?">📧 Contact Protocol</button>
+                            <button class="quick-action" data-msg="What are your coolest features?">✨ Features</button>
+                            <button class="quick-action" data-msg="Start quiz mode">🎯 Quiz Me</button>
+                            <button class="quick-action" data-msg="Tell me something random">🎲 Random</button>
+                            <button class="quick-action" data-msg="Show me project comparisons">📊 Compare</button>
                         </div>
                     </div>
                 </div>
@@ -166,7 +484,7 @@ class PortfolioBot {
                         <input 
                             type="text" 
                             id="chatbot-input" 
-                            placeholder="Ask me anything about Vinay..."
+                            placeholder="Ask me anything or try 'quiz mode'..."
                             autocomplete="off"
                         />
                         <button id="chatbot-send">
@@ -174,7 +492,7 @@ class PortfolioBot {
                         </button>
                     </div>
                     <div class="chatbot-footer">
-                        <span>🕵️ Agent47 Intelligence System</span>
+                        <span>🕵️ Agent47 Enhanced AI | <span id="question-counter">0</span> Intel Gathered</span>
                     </div>
                 </div>
             </div>
@@ -224,7 +542,11 @@ class PortfolioBot {
             // Send welcome message if first time
             if (!localStorage.getItem('agent47-visited')) {
                 setTimeout(() => {
-                    this.addBotMessage(this.getRandomResponse('greetings'));
+                    const greetings = [
+                        "🕵️ Agent47 Enhanced AI activated. I'm equipped with advanced rule-based intelligence. Try asking complex questions, start quiz mode, or request comparisons!",
+                        "Target acquired. 🎯 Agent47 here with enhanced capabilities. I can handle follow-up questions, comparisons, and even quiz you! What intel do you need?"
+                    ];
+                    this.addBotMessage(greetings[Math.floor(Math.random() * greetings.length)]);
                     localStorage.setItem('agent47-visited', 'true');
                 }, 500);
             }
@@ -249,250 +571,609 @@ class PortfolioBot {
         this.addUserMessage(message);
         input.value = '';
         
+        // Update counter
+        this.questionCount++;
+        document.getElementById('question-counter').textContent = this.questionCount;
+        
         // Clear suggestions
         document.getElementById('chatbot-suggestions').innerHTML = '';
         
         // Show typing indicator
         this.showTypingIndicator();
         
-        // Generate response
+        // Process message through rule engine
         setTimeout(() => {
             this.hideTypingIndicator();
-            const response = this.generateResponse(message);
-            this.addBotMessage(response);
-        }, 800 + Math.random() * 1000);
+            const response = this.processMessage(message);
+            this.addBotMessage(response.text, response.suggestions);
+            
+            // Update mode if changed
+            if (response.mode) {
+                document.getElementById('chatbot-mode').textContent = response.mode;
+            }
+        }, 800 + Math.random() * 800);
     }
 
-    generateResponse(message) {
+    processMessage(message) {
         const lowerMessage = message.toLowerCase();
-        this.conversationContext.push(lowerMessage);
+        this.conversationHistory.push({
+            message: lowerMessage,
+            timestamp: Date.now()
+        });
+
+        // Keep only last 10 messages for context
+        if (this.conversationHistory.length > 10) {
+            this.conversationHistory.shift();
+        }
+
+        // Process through rule engine
+        const intent = this.detectIntent(lowerMessage);
         
-        // Keep only last 5 messages for context
-        if (this.conversationContext.length > 5) {
-            this.conversationContext.shift();
+        if (intent) {
+            return this[intent.action](lowerMessage, intent);
         }
-        
-        // Greetings
-        if (this.matchPattern(lowerMessage, ['hi', 'hello', 'hey', 'greetings', 'good morning', 'good afternoon', 'good evening', 'sup', 'yo', 'howdy'])) {
-            return this.getRandomResponse('greetings');
-        }
-        
-        // Thanks/Appreciation
-        if (this.matchPattern(lowerMessage, ['thanks', 'thank you', 'thx', 'appreciate', 'helpful'])) {
-            return this.getRandomResponse('thanks');
-        }
-        
-        // Compliments
-        if (this.matchPattern(lowerMessage, ['impressive', 'amazing', 'awesome', 'great', 'cool', 'nice', 'good work', 'excellent', 'outstanding', 'wow'])) {
-            return this.getRandomResponse('appreciation');
-        }
-        
-        // Name/Who questions
-        if (this.matchPattern(lowerMessage, ['who are you', 'your name', 'who is', 'tell me about vinay', 'about him', 'introduce'])) {
-            return `I'm Vinay Varshigan S.J, a Master's student in Computer Science at Northeastern University with a perfect 4.0 GPA. Currently serving as a Teaching Assistant for Algorithms. I'm passionate about AI/ML, Data Engineering, and building intelligent systems that solve real-world problems! 🚀`;
-        }
-        
-        // Location
-        if (this.matchPattern(lowerMessage, ['where', 'location', 'live', 'based', 'city', 'place'])) {
-            return `Vinay is currently based in ${this.knowledge.location}. 📍`;
-        }
-        
-        // Contact - Specific
-        if (this.matchPattern(lowerMessage, ['email', 'mail address', 'send email'])) {
-            return `You can email Vinay at ${this.knowledge.email} 📧`;
-        }
-        if (this.matchPattern(lowerMessage, ['phone', 'call', 'number', 'telephone'])) {
-            return `You can call Vinay at ${this.knowledge.phone} 📞`;
-        }
-        if (this.matchPattern(lowerMessage, ['linkedin', 'social media', 'professional network'])) {
-            return `Connect with Vinay on LinkedIn: ${this.knowledge.linkedin} 💼`;
-        }
-        if (this.matchPattern(lowerMessage, ['github', 'code', 'repository', 'repo'])) {
-            return `Check out Vinay's code on GitHub: ${this.knowledge.github} 💻`;
-        }
-        if (this.matchPattern(lowerMessage, ['contact', 'reach', 'get in touch', 'communicate'])) {
-            return `You can reach Vinay at:\n📧 Email: ${this.knowledge.email}\n📞 Phone: ${this.knowledge.phone}\n💼 LinkedIn: ${this.knowledge.linkedin}\n💻 GitHub: ${this.knowledge.github}`;
-        }
-        
-        // Education
-        if (this.matchPattern(lowerMessage, ['education', 'degree', 'university', 'college', 'study', 'student', 'gpa', 'grade', 'academic'])) {
-            return `Vinay is pursuing his ${this.knowledge.currentDegree} at ${this.knowledge.university} with a perfect ${this.knowledge.gpa} GPA! 🎓 He also serves as a ${this.knowledge.role}. He previously completed his ${this.knowledge.previousDegree} from ${this.knowledge.previousUniversity}.`;
-        }
-        
-        // Skills - General
-        if (this.matchPattern(lowerMessage, ['skill', 'technology', 'tech stack', 'know', 'proficient', 'expertise', 'good at', 'capabilities', 'competencies'])) {
-            return `Vinay's tech stack includes:\n\n💻 Languages: ${this.knowledge.languages.join(', ')}\n🤖 ML/AI: ${this.knowledge.mlSkills.slice(0, 5).join(', ')}\n☁️ Cloud: ${this.knowledge.cloud.join(', ')}\n📊 Analytics: Power BI, DAX, Pandas, NumPy\n🔧 Tools: Docker, Linux, Git, REST APIs\n\nHe's experienced in building scalable ML models, data pipelines, and cloud infrastructure!`;
-        }
-        
-        // Programming Languages
-        if (this.matchPattern(lowerMessage, ['python', 'java', 'sql', 'programming language', 'code'])) {
-            const langs = [];
-            if (lowerMessage.includes('python')) langs.push('Python');
-            if (lowerMessage.includes('java')) langs.push('Java');
-            if (lowerMessage.includes('sql')) langs.push('SQL');
-            
-            if (langs.length > 0) {
-                return `Yes! Vinay is proficient in ${langs.join(', ')}. He uses them extensively for ML development, backend systems, and data engineering. Check out his projects to see them in action! 💻`;
-            }
-            return `Vinay programs in ${this.knowledge.languages.join(', ')}. He's used these to build everything from AI models to cloud infrastructure! 🚀`;
-        }
-        
-        // Machine Learning / AI
-        if (this.matchPattern(lowerMessage, ['machine learning', 'ml', 'ai', 'artificial intelligence', 'deep learning', 'neural network', 'model', 'bert', 'transformer', 'cnn', 'resnet', 'pytorch', 'tensorflow'])) {
-            return `Vinay has extensive ML/AI experience! 🤖\n\nHe's built:\n• Sentiment analysis with BERT & VADER (89% accuracy)\n• Log classification system (99% accuracy)\n• Wildlife detection with ResNet50 & Transformers\n• Food allergen detection (93% accuracy)\n\nHe works with PyTorch, TensorFlow, CNNs, Transformers, and various NLP techniques. His projects combine computer vision, NLP, and traditional ML!`;
-        }
-        
-        // NLP
-        if (this.matchPattern(lowerMessage, ['nlp', 'natural language', 'text', 'sentiment', 'language processing'])) {
-            return `Vinay has strong NLP expertise! He's implemented sentiment analysis using VADER and BERT, log classification with SentenceTransformers, and text classification systems. He's currently taking an NLP course at Northeastern and has applied these skills in multiple production projects! 📝`;
-        }
-        
-        // Cloud / AWS
-        if (this.matchPattern(lowerMessage, ['aws', 'amazon', 'cloud', 'ec2', 'vpc', 'azure', 'gcp', 'deployment'])) {
-            return `Vinay has hands-on AWS experience! ☁️\n\nHe's:\n• Designed and deployed scalable infrastructure (VPC, EC2, Auto Scaling)\n• Automated deployment workflows with Linux scripts\n• AWS Cloud Essentials certified\n• Built an AWS-deployed IoT system (patent pending)\n\nHe understands cloud architecture, scalability, and production deployment best practices!`;
-        }
-        
-        // Data Engineering
-        if (this.matchPattern(lowerMessage, ['data engineering', 'etl', 'pipeline', 'data pipeline', 'mysql', 'database', 'sql optimization'])) {
-            return `Vinay is experienced in Data Engineering! 🔧\n\nHe's built ETL pipelines, optimized SQL queries (20% latency reduction), automated data validation workflows (60% time saved), and worked with MySQL databases at scale. He combines Python, SQL, Docker, and cloud tech to create robust data infrastructure!`;
-        }
-        
-        // Data Analytics / Power BI
-        if (this.matchPattern(lowerMessage, ['analytics', 'power bi', 'dashboard', 'visualization', 'dax', 'data analysis', 'bi'])) {
-            return `Vinay creates powerful data visualizations! 📊\n\nHe's skilled in Power BI with DAX measures, built interactive retail sales dashboards, and uses Pandas, Matplotlib, and Seaborn for analysis. He can transform raw data into actionable insights for stakeholders!`;
-        }
-        
-        // Experience
-        if (this.matchPattern(lowerMessage, ['experience', 'work', 'job', 'worked', 'internship', 'career', 'employment', 'companies'])) {
-            return `Vinay has impressive work experience! 💼\n\nCurrently:\n• ${this.knowledge.experiences.current}\n\nPrevious roles:\n• Data Scientist Intern at Besant Technologies (60% time savings!)\n• Secretary at SVCE CyberHub (3x engagement growth)\n• Software Developer Intern at Bluebase (AWS deployment)\n\nHe's worked across ML, data engineering, cloud infrastructure, and technical leadership!`;
-        }
-        
-        // Teaching Assistant
-        if (this.matchPattern(lowerMessage, ['teaching', 'ta', 'assistant', 'algorithms', 'cs5800'])) {
-            return `Vinay is currently a Teaching Assistant for Algorithms (CS5800) at Northeastern University! 👨‍🏫 He helps graduate students master advanced computational problem-solving, conducts office hours, grades assignments, and collaborates with faculty on course materials.`;
-        }
-        
-        // Projects - General
-        if (this.matchPattern(lowerMessage, ['project', 'built', 'created', 'developed', 'portfolio'])) {
-            return `Vinay has built amazing projects! 🚀\n\n Featured:\n1. Pocket Forecaster - AI smartphone recommendation (89% accuracy)\n2. Log Classification System - 99% accuracy using BERT\n3. Wildlife Detection - Real-time IoT system with ResNet50\n4. Smart Food Solutions - Allergen detection (93% accuracy)\n5. Retail Dashboard - Power BI analytics\n6. E-commerce Classifier - FastText text classification\n\nEach solves real-world problems with cutting-edge tech!`;
-        }
-        
-        // Specific Projects
-        if (this.matchPattern(lowerMessage, ['pocket forecaster', 'smartphone', 'phone recommendation'])) {
-            return `Pocket Forecaster is Vinay's AI-powered smartphone recommendation engine! 📱\n\nBuilt with Java (MVC, Strategy Pattern), it uses hybrid sentiment analysis (VADER + BERT) to analyze customer reviews and recommend phones based on budget, usage, and OS preference. Achieved 89%+ accuracy! The system also suggests personalized add-ons.`;
-        }
-        if (this.matchPattern(lowerMessage, ['log classification', 'log system', 'logs'])) {
-            return `Vinay's Log Classification System achieved 99% accuracy! 📋\n\nIt's a hybrid multi-stage pipeline combining regex, BERT embeddings, and semantic clustering (DBSCAN) to automatically categorize system logs across 9 classes including security alerts, errors, and resource usage. Built with Python and SentenceTransformers!`;
-        }
-        if (this.matchPattern(lowerMessage, ['wildlife', 'animal detection', 'iot sensor'])) {
-            return `The Wildlife Detection & Emergency System is impressive! 🐾\n\nIt uses ResNet50 and Transformer models with IoT sensors (ESP32-CAM) to detect animals in real-time and send alerts via RF/mesh networks even without internet! Built for tribal safety in remote regions, it classifies animals and assigns danger levels.`;
-        }
-        if (this.matchPattern(lowerMessage, ['food', 'allergen', 'nutrition'])) {
-            return `Smart Food Solutions detects food and allergens with 93% accuracy! 🍽️\n\nUsing ResNet50 and InceptionV3 with Nutritionix API integration, it provides real-time allergen identification and nutritional insights. Perfect for people with food allergies or dietary restrictions!`;
-        }
-        
-        // Publications
-        if (this.matchPattern(lowerMessage, ['publication', 'paper', 'research', 'published', 'patent', 'routledge', 'book'])) {
-            return `Vinay has impressive publications! 📚\n\n• Routledge book chapter on blockchain, smart contracts, and AI-based fraud detection\n• Best Paper Award for heart disease prediction (83% accuracy)\n• Patent under review for AWS-deployed IoT water monitoring system\n\nHis research combines cutting-edge tech with practical applications!`;
-        }
-        
-        // Certifications
-        if (this.matchPattern(lowerMessage, ['certification', 'certified', 'certificate', 'credential', 'badge'])) {
-            return `Vinay holds these certifications: 🏆\n\n• AWS Cloud Essentials (Amazon Web Services)\n• Introduction to IoT (NPTEL IIT)\n• Foundations of Software Engineering (Northeastern University)\n\nYou can view them in the Certifications section!`;
-        }
-        
-        // Hiring / Availability
-        if (this.matchPattern(lowerMessage, ['hire', 'hiring', 'job', 'opportunity', 'available', 'open to work', 'looking for', 'full time', 'position', 'role'])) {
-            return `Yes! Vinay is actively seeking NLP, Software Engineering, or AI/ML internships! 💼\n\nWith his:\n• Perfect 4.0 GPA\n• TA experience at Northeastern\n• Multiple internships\n• Published research\n• Impressive project portfolio\n\nHe's ready to make an impact! Contact him at ${this.knowledge.email}`;
-        }
-        
-        // Salary / Compensation
-        if (this.matchPattern(lowerMessage, ['salary', 'compensation', 'pay', 'wage', 'benefits'])) {
-            return `For salary discussions, please reach out directly to Vinay at ${this.knowledge.email}. He's open to discussing compensation based on the role and responsibilities! 💰`;
-        }
-        
-        // Strengths / Why hire
-        if (this.matchPattern(lowerMessage, ['why', 'strength', 'advantage', 'best', 'stand out', 'unique', 'what makes'])) {
-            return `Vinay stands out because:\n\n✅ Perfect 4.0 GPA at top university\n✅ Real impact: 60% time savings, 99% accuracy\n✅ Full-stack: ML + Data Engineering + Cloud\n✅ Published researcher with Best Paper Award\n✅ Teaching experience (Algorithms TA)\n✅ Multiple production projects\n✅ Strong communication skills\n\nHe combines academic excellence with practical experience!`;
-        }
-        
-        // Weaknesses
-        if (this.matchPattern(lowerMessage, ['weakness', 'improve', 'learning', 'challenge'])) {
-            return `Vinay believes in continuous learning! 📚 He's always exploring new technologies, currently focusing on advanced transformer architectures and cloud-native data engineering. He sees challenges as opportunities to grow and improve!`;
-        }
-        
-        // Hobbies / Personal
-        if (this.matchPattern(lowerMessage, ['hobby', 'hobbies', 'free time', 'fun', 'interest', 'personal'])) {
-            return `Beyond coding, Vinay enjoys automating workflows (he automated his coffee breaks!), exploring new ML research papers, and leading technical events. He's passionate about using technology to solve real-world problems! ☕🤖`;
-        }
-        
-        // Teamwork
-        if (this.matchPattern(lowerMessage, ['team', 'collaborate', 'collaboration', 'work with others'])) {
-            return `Vinay is a great team player! 🤝 He's led cross-functional teams at SVCE CyberHub, collaborated on wildlife detection systems, worked with senior engineers at Bluebase, and currently helps students as a TA. He values communication and collaboration!`;
-        }
-        
-        // Achievements
-        if (this.matchPattern(lowerMessage, ['achievement', 'accomplish', 'award', 'recognition', 'success'])) {
-            return `Vinay's achievements include:\n\n🏆 Perfect 4.0 GPA at Northeastern\n🏆 Best Paper Award winner\n🏆 60% processing time reduction\n🏆 99% ML accuracy\n🏆 3x social media engagement growth\n🏆 Published researcher\n🏆 Patent applicant\n\nHe consistently delivers exceptional results!`;
-        }
-        
-        // Jokes
-        if (this.matchPattern(lowerMessage, ['joke', 'funny', 'laugh', 'humor', 'make me laugh'])) {
-            return this.getRandomResponse('jokes');
-        }
-        
-        // Goodbye
-        if (this.matchPattern(lowerMessage, ['bye', 'goodbye', 'see you', 'later', 'gotta go'])) {
-            return this.getRandomResponse('goodbye');
-        }
-        
-        // Questions about the bot
-        if (this.matchPattern(lowerMessage, ['who are you', 'what are you', 'are you ai', 'are you bot', 'chatbot', 'agent47', 'agent 47'])) {
-            return `🕵️ I'm Agent47 - Vinay's intelligent portfolio assistant. Codename: Information Retrieval Specialist. Mission parameters: Provide comprehensive intel on Vinay's skills, experience, projects, and facilitate contact. I utilize advanced pattern recognition and natural language processing. What intelligence do you require?`;
-        }
-        
-        // Help
-        if (this.matchPattern(lowerMessage, ['help', 'what can you', 'how to use', 'commands'])) {
-            return `🕵️ Agent47 Intelligence Categories:\n\n💻 Technical Skills & Arsenal\n💼 Mission History (Experience)\n🚀 Completed Operations (Projects)\n🎓 Training & Credentials\n📚 Published Intelligence\n📧 Secure Contact Channels\n💼 Availability Status\n\nIssue your query. Example: "What skills does Vinay have?" or "Intel on his projects"`;
-        }
-        
-        // Fallback - Try to extract keywords and provide relevant info
+
+        // Fallback to intelligent response
         return this.intelligentFallback(lowerMessage);
     }
-    
-    matchPattern(text, keywords) {
-        return keywords.some(keyword => text.includes(keyword));
+
+    detectIntent(message) {
+        let bestMatch = null;
+        let highestConfidence = 0;
+
+        for (const [intentName, intentData] of Object.entries(this.rules.intents)) {
+            const confidence = this.calculateConfidence(message, intentData.patterns);
+            
+            if (confidence > highestConfidence && confidence > 0.5) {
+                highestConfidence = confidence;
+                bestMatch = {
+                    intent: intentName,
+                    confidence: confidence,
+                    action: intentData.action
+                };
+            }
+        }
+
+        return bestMatch;
     }
-    
-    intelligentFallback(message) {
-        // Extract keywords and try to match to knowledge
+
+    calculateConfidence(message, patterns) {
+        let matches = 0;
         const words = message.split(' ');
         
-        // Check for skill keywords
-        const allSkills = [...this.knowledge.languages, ...this.knowledge.mlSkills, ...this.knowledge.dataEngineering, ...this.knowledge.cloud, ...this.knowledge.analytics];
-        const mentionedSkills = allSkills.filter(skill => message.includes(skill.toLowerCase()));
-        
-        if (mentionedSkills.length > 0) {
-            return `Yes! Vinay has experience with ${mentionedSkills.join(', ')}. He's used these in multiple projects. Want to know more about his skills or see specific projects using these technologies?`;
+        for (const pattern of patterns) {
+            if (message.includes(pattern)) {
+                matches++;
+            }
         }
         
-        // Check if asking a question
+        return Math.min(matches / Math.max(patterns.length * 0.3, 1), 1);
+    }
+
+    // Response Methods
+    respondGreeting(message, intent) {
+        const greetings = [
+            "🕵️ Agent47 here. Mission: Provide intel on Vinay Varshigan. What would you like to know?",
+            "Target acquired. 🎯 Agent47 reporting. I have comprehensive data on Vinay's skills, projects, and experience.",
+            "Agent47 online. Ready to assist with any questions about Vinay's capabilities. Try asking about specific projects or start quiz mode!"
+        ];
+
+        const suggestions = [
+            "What are Vinay's top skills?",
+            "Tell me about his best project",
+            "Start quiz mode",
+            "Compare his projects"
+        ];
+
+        return {
+            text: greetings[Math.floor(Math.random() * greetings.length)],
+            suggestions: suggestions
+        };
+    }
+
+    respondFarewell(message, intent) {
+        const farewells = [
+            "🕵️ Mission complete. Agent47 signing off. Contact Vinay at sjvinay357@gmail.com for opportunities! 🚀",
+            "Intel transfer complete. Agent47 out. Don't forget to connect with Vinay! Over and out! 👋",
+            "Target documented. Agent47 going dark. Reach out to Vinay for collaboration! ✨"
+        ];
+
+        return {
+            text: farewells[Math.floor(Math.random() * farewells.length)]
+        };
+    }
+
+    respondThanks(message, intent) {
+        const thanks = [
+            "🕵️ Roger that. Agent47 standing by for further intel requests.",
+            "Mission acknowledged. Any additional intelligence needed?",
+            "Copy that. Agent47 ready for next query. Try quiz mode or comparisons!"
+        ];
+
+        const suggestions = [
+            "Tell me something random",
+            "Start quiz mode",
+            "What's unique about Vinay?"
+        ];
+
+        return {
+            text: thanks[Math.floor(Math.random() * thanks.length)],
+            suggestions: suggestions
+        };
+    }
+
+    respondCompliment(message, intent) {
+        const compliments = [
+            "Thank you! Vinay has worked really hard on his skills and projects! 🌟 Want to know more about a specific area?",
+            "I'll pass that along! Vinay would love to hear from you directly at sjvinay357@gmail.com! 💼",
+            "Thanks for the kind words! Vinay's dedication shows in his 4.0 GPA and multiple successful projects. What interests you most?"
+        ];
+
+        const suggestions = [
+            "Tell me about his achievements",
+            "What makes him stand out?",
+            "Show me his best work"
+        ];
+
+        return {
+            text: compliments[Math.floor(Math.random() * compliments.length)],
+            suggestions: suggestions
+        };
+    }
+
+    respondSkills(message, intent) {
+        const kg = this.knowledgeGraph.skills;
+        
+        let response = "🕵️ Vinay's Technical Arsenal:\n\n";
+        response += `💻 **Programming**: ${kg.programming.expert.join(', ')}\n\n`;
+        response += `🤖 **AI/ML**: Specialized in ${kg.aiml.specialization}\n`;
+        response += `   Models: ${kg.aiml.models.slice(0, 4).join(', ')}\n\n`;
+        response += `☁️ **Cloud**: AWS (${kg.cloud.services.join(', ')})\n\n`;
+        response += `📊 **Analytics**: ${kg.analytics.tools.slice(0, 3).join(', ')}\n\n`;
+        response += `🎯 **Track Record**: ${kg.aiml.accuracy.slice(0, 2).join(', ')}`;
+
+        const suggestions = [
+            "Tell me more about his ML skills",
+            "What AWS experience does he have?",
+            "Compare Python vs Java skills",
+            "Which projects use these skills?"
+        ];
+
+        return {
+            text: response,
+            suggestions: suggestions
+        };
+    }
+
+    respondProjects(message, intent) {
+        const projects = this.knowledgeGraph.projects;
+        
+        let response = "🕵️ Vinay's Project Portfolio:\n\n";
+        
+        projects.slice(0, 3).forEach((proj, idx) => {
+            response += `${idx + 1}. **${proj.name}** (${proj.category})\n`;
+            response += `   ${proj.description}\n`;
+            if (proj.accuracy) response += `   Accuracy: ${proj.accuracy}\n`;
+            response += `   Impact: ${proj.impact}\n\n`;
+        });
+
+        response += `Total: ${projects.length} projects showcasing AI/ML, NLP, and IoT expertise!`;
+
+        const suggestions = [
+            "Tell me about Pocket Forecaster",
+            "Which project has highest accuracy?",
+            "Compare the ML projects",
+            "Show me IoT projects"
+        ];
+
+        return {
+            text: response,
+            suggestions: suggestions
+        };
+    }
+
+    respondExperience(message, intent) {
+        const exp = this.knowledgeGraph.experience;
+        
+        let response = "🕵️ Vinay's Career Intel:\n\n";
+        
+        exp.forEach((job, idx) => {
+            response += `**${job.role}** @ ${job.company}\n`;
+            response += `${job.period} | ${job.type}\n`;
+            if (job.achievements) {
+                response += `Achievements:\n`;
+                job.achievements.slice(0, 2).forEach(ach => {
+                    response += `• ${ach}\n`;
+                });
+            }
+            response += `\n`;
+        });
+
+        const suggestions = [
+            "What did he achieve at Besant?",
+            "Tell me about his TA role",
+            "What leadership experience?",
+            "Compare his internships"
+        ];
+
+        return {
+            text: response,
+            suggestions: suggestions
+        };
+    }
+
+    respondEducation(message, intent) {
+        const edu = this.knowledgeGraph.education;
+        
+        let response = "🕵️ Academic Intel:\n\n";
+        response += `🎓 **Current**: ${edu.current.degree}\n`;
+        response += `   ${edu.current.university}\n`;
+        response += `   GPA: **${edu.current.gpa}** (Perfect!)\n`;
+        response += `   Role: ${edu.current.role}\n\n`;
+        response += `📚 Courses: ${edu.current.courses.join(', ')}\n\n`;
+        response += `✨ Highlights:\n`;
+        edu.current.highlights.forEach(h => {
+            response += `   • ${h}\n`;
+        });
+
+        const suggestions = [
+            "What courses is he taking?",
+            "Tell me about his TA role",
+            "What's his GPA?",
+            "Previous education?"
+        ];
+
+        return {
+            text: response,
+            suggestions: suggestions
+        };
+    }
+
+    respondContact(message, intent) {
+        const contact = this.knowledgeGraph.personal;
+        
+        let response = "🕵️ Contact Protocols:\n\n";
+        response += `📧 **Email**: ${contact.email}\n`;
+        response += `📞 **Phone**: ${contact.phone}\n`;
+        response += `📍 **Location**: ${contact.location}\n`;
+        response += `💼 **LinkedIn**: ${contact.linkedin}\n`;
+        response += `💻 **GitHub**: ${contact.github}\n\n`;
+        response += `Best way to reach: Email for opportunities!`;
+
+        const suggestions = [
+            "Is he available for hire?",
+            "What positions is he seeking?",
+            "Tell me about his availability"
+        ];
+
+        return {
+            text: response,
+            suggestions: suggestions
+        };
+    }
+
+    respondAvailability(message, intent) {
+        const avail = this.knowledgeGraph.availability;
+        
+        let response = "🕵️ Availability Status: **OPEN**\n\n";
+        response += `Seeking: ${avail.lookingFor.join(', ')}\n\n`;
+        response += `Why Hire Vinay?\n`;
+        response += `• Perfect 4.0 GPA at top university\n`;
+        response += `• Real impact: 60% time savings, 99% accuracy\n`;
+        response += `• Full-stack: ML + Data Engineering + Cloud\n`;
+        response += `• Published researcher with Best Paper Award\n`;
+        response += `• Teaching experience (Algorithms TA)\n\n`;
+        response += `📧 Contact: ${this.knowledgeGraph.personal.email}`;
+
+        const suggestions = [
+            "What are his strengths?",
+            "Show me his achievements",
+            "Tell me about his projects",
+            "What makes him unique?"
+        ];
+
+        return {
+            text: response,
+            suggestions: suggestions
+        };
+    }
+
+    respondPublications(message, intent) {
+        const pubs = this.knowledgeGraph.publications;
+        
+        let response = "🕵️ Published Intelligence:\n\n";
+        
+        pubs.forEach((pub, idx) => {
+            response += `${idx + 1}. **${pub.title}**\n`;
+            response += `   Type: ${pub.type} | Status: ${pub.status}\n`;
+            if (pub.award) response += `   🏆 ${pub.award}\n`;
+            response += `\n`;
+        });
+
+        const suggestions = [
+            "Tell me about the Routledge publication",
+            "What awards has he won?",
+            "Tell me about the patent"
+        ];
+
+        return {
+            text: response,
+            suggestions: suggestions
+        };
+    }
+
+    respondCertifications(message, intent) {
+        const certs = this.knowledgeGraph.certifications;
+        
+        let response = "🕵️ Verified Credentials:\n\n";
+        
+        certs.forEach((cert, idx) => {
+            response += `${idx + 1}. **${cert.name}**\n`;
+            response += `   Provider: ${cert.provider}\n`;
+            response += `   ${cert.verified ? '✅ Verified' : 'In Progress'}\n\n`;
+        });
+
+        const suggestions = [
+            "Tell me about AWS certification",
+            "What skills does he have?",
+            "Show me his projects"
+        ];
+
+        return {
+            text: response,
+            suggestions: suggestions
+        };
+    }
+
+    startQuizMode(message, intent) {
+        this.currentMode = 'quiz';
+        
+        const response = "🎯 **Quiz Mode Activated!**\n\n";
+        const quizQuestion = this.generateQuizQuestion();
+        
+        return {
+            text: response + quizQuestion,
+            mode: "Quiz Mode",
+            suggestions: [
+                "Skip this question",
+                "Exit quiz mode",
+                "Give me a hint"
+            ]
+        };
+    }
+
+    generateQuizQuestion() {
+        const categories = Object.keys(this.questionBank);
+        const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+        const questions = this.questionBank[randomCategory];
+        const randomQuestion = questions[Math.floor(Math.random() * questions.length)];
+        
+        return `**Question**: ${randomQuestion}\n\nTry answering or ask for a hint!`;
+    }
+
+    handleComparison(message, intent) {
+        let response = "🔍 **Comparison Mode Activated**\n\n";
+        
+        // Detect what's being compared
+        if (message.includes('project')) {
+            response += this.compareProjects();
+        } else if (message.includes('skill') || message.includes('python') || message.includes('java')) {
+            response += this.compareSkills(message);
+        } else {
+            response += "I can compare:\n";
+            response += "• Projects (accuracy, tech, impact)\n";
+            response += "• Skills (Python vs Java, ML vs Data Engineering)\n";
+            response += "• Experiences (internships, achievements)\n\n";
+            response += "What would you like to compare?";
+        }
+
+        const suggestions = [
+            "Compare all projects",
+            "Python vs Java",
+            "ML vs Data Engineering",
+            "Compare internships"
+        ];
+
+        return {
+            text: response,
+            mode: "Compare Mode",
+            suggestions: suggestions
+        };
+    }
+
+    compareProjects() {
+        const projects = this.knowledgeGraph.projects.slice(0, 3);
+        let response = "**Project Comparison**:\n\n";
+        
+        response += "| Project | Accuracy | Category | Key Tech |\n";
+        response += "|---------|----------|----------|----------|\n";
+        projects.forEach(p => {
+            response += `| ${p.name} | ${p.accuracy || 'N/A'} | ${p.category} | ${p.tech[0]} |\n`;
+        });
+        
+        response += `\n🏆 Highest Accuracy: Log Classification (99%)\n`;
+        response += `💡 Most Complex: Wildlife Detection (IoT + AI)`;
+        
+        return response;
+    }
+
+    compareSkills(message) {
+        let response = "**Skill Comparison**:\n\n";
+        
+        if (message.includes('python') && message.includes('java')) {
+            response += "**Python vs Java**:\n\n";
+            response += "🐍 **Python**:\n";
+            response += "• Primary language for ML/AI\n";
+            response += "• Used in 4/6 major projects\n";
+            response += "• Libraries: PyTorch, TensorFlow, Pandas\n\n";
+            response += "☕ **Java**:\n";
+            response += "• Enterprise applications\n";
+            response += "• Used in Pocket Forecaster (89% accuracy)\n";
+            response += "• Patterns: MVC, Strategy\n\n";
+            response += "**Verdict**: Both strong, Python for AI, Java for scalable systems";
+        } else {
+            response += "Vinay has strong skills in:\n";
+            response += "• Programming: Python, Java, SQL\n";
+            response += "• ML/AI: Deep Learning, NLP, Computer Vision\n";
+            response += "• Cloud: AWS (EC2, VPC)\n";
+            response += "• Analytics: Power BI, Pandas";
+        }
+        
+        return response;
+    }
+
+    respondHelp(message, intent) {
+        let response = "🕵️ **Agent47 Enhanced AI - Capabilities**:\n\n";
+        response += "**Standard Mode**:\n";
+        response += "• Ask about skills, projects, experience\n";
+        response += "• Get detailed intel on any topic\n\n";
+        response += "**Special Modes**:\n";
+        response += "🎯 Quiz Mode: 'start quiz' - Test your knowledge\n";
+        response += "🔍 Compare Mode: 'compare X vs Y' - Side-by-side analysis\n";
+        response += "🎲 Random Mode: 'tell me something random'\n\n";
+        response += "**Smart Features**:\n";
+        response += "• Follow-up questions\n";
+        response += "• Context awareness\n";
+        response += "• Suggested questions\n";
+        response += "• Multi-topic handling";
+
+        const suggestions = [
+            "Start quiz mode",
+            "Compare projects",
+            "Tell me something random",
+            "What are Vinay's skills?"
+        ];
+
+        return {
+            text: response,
+            suggestions: suggestions
+        };
+    }
+
+    respondRandom(message, intent) {
+        const randomFacts = [
+            `🎯 Vinay achieved 99% accuracy in log classification - that's better than most humans!`,
+            `🤖 He automated data validation so well, he saved 60% processing time. Now he jokes about automating coffee breaks!`,
+            `🏆 Perfect 4.0 GPA at Northeastern while being a TA for Algorithms - that's dedication!`,
+            `🐾 His wildlife detection system helps protect tribal communities using AI + IoT - tech for good!`,
+            `📚 Published in Routledge and won Best Paper Award - research excellence!`,
+            `☁️ AWS certified and deployed production infrastructure - cloud expertise!`,
+            `📱 Built an AI that recommends smartphones with 89% accuracy using sentiment analysis!`
+        ];
+
+        const fact = randomFacts[Math.floor(Math.random() * randomFacts.length)];
+
+        const suggestions = [
+            "Tell me another random fact",
+            "Tell me about this project",
+            "What else is impressive?",
+            "Start quiz mode"
+        ];
+
+        return {
+            text: fact,
+            suggestions: suggestions
+        };
+    }
+
+    respondJoke(message, intent) {
+        const jokes = [
+            "Why do programmers prefer dark mode? Because light attracts bugs! 🐛😄",
+            "How many programmers does it take to change a light bulb? None. It's a hardware problem! 💡",
+            "Why did Vinay automate everything? Because manual work is so 2020! 🤖",
+            "Why do Java developers wear glasses? Because they don't C#! 😎",
+            "A SQL query walks into a bar, walks up to two tables and asks... 'Can I JOIN you?' 🍺",
+            "Why did the ML model break up with the dataset? Too many issues to process! 💔",
+            "Vinay's code is so clean, even his bugs are well-documented! 📝"
+        ];
+
+        const joke = jokes[Math.floor(Math.random() * jokes.length)];
+
+        const suggestions = [
+            "Tell me another joke",
+            "Tell me something serious",
+            "What are his skills?",
+            "Start quiz mode"
+        ];
+
+        return {
+            text: joke,
+            suggestions: suggestions
+        };
+    }
+
+    intelligentFallback(message) {
+        // Extract keywords
+        const kg = this.knowledgeGraph;
+        
+        // Check for specific skills mentioned
+        const allSkills = [
+            ...kg.skills.programming.expert,
+            ...kg.skills.aiml.techniques,
+            ...kg.skills.aiml.models
+        ];
+        
+        const mentionedSkills = allSkills.filter(skill => 
+            message.includes(skill.toLowerCase())
+        );
+        
+        if (mentionedSkills.length > 0) {
+            return {
+                text: `Yes! Vinay has experience with ${mentionedSkills.join(', ')}. He's used these in multiple projects. Want to know which projects or see his achievements with these technologies?`,
+                suggestions: [
+                    `Projects using ${mentionedSkills[0]}`,
+                    "Tell me about his skills",
+                    "Compare his projects",
+                    "Start quiz mode"
+                ]
+            };
+        }
+        
+        // Check for project names
+        const projects = kg.projects;
+        const mentionedProjects = projects.filter(p => 
+            message.includes(p.name.toLowerCase())
+        );
+        
+        if (mentionedProjects.length > 0) {
+            const proj = mentionedProjects[0];
+            return {
+                text: `**${proj.name}** (${proj.category})\n\n${proj.description}\n\n**Tech**: ${proj.tech.join(', ')}\n${proj.accuracy ? `**Accuracy**: ${proj.accuracy}\n` : ''}**Impact**: ${proj.impact}`,
+                suggestions: [
+                    "Tell me about another project",
+                    "Compare all projects",
+                    "What tech did he use?",
+                    "Show achievements"
+                ]
+            };
+        }
+        
+        // Check if question
         if (message.includes('?')) {
-            return `🕵️ Interesting query detected. Agent47 intelligence database includes:\n\n• Technical Arsenal (Skills)\n• Mission History (Experience)\n• Completed Operations (Projects)\n• Training Records (Education)\n• Published Intelligence\n• Contact Protocols\n• Availability Status\n\nSpecify your intel requirement.`;
+            return {
+                text: "🕵️ Interesting query! I can provide intel on:\n\n• Technical skills & tools\n• Projects & achievements\n• Work experience\n• Education & certifications\n• Publications & research\n• Availability & hiring\n\nOr try special modes:\n🎯 'quiz mode' | 🔍 'compare projects' | 🎲 'random fact'",
+                suggestions: [
+                    "What are his top skills?",
+                    "Show me best projects",
+                    "Start quiz mode",
+                    "Compare his work"
+                ]
+            };
         }
         
         // Default helpful response
-        return `🕵️ Query unclear. Agent47 standing by for clarification.\n\nAvailable intelligence categories:\n• Technical capabilities\n• Career operations\n• Project files\n• Academic records\n• Contact channels\n• Hiring availability\n\nPlease refine your request.`;
+        return {
+            text: "🕵️ Query unclear. Agent47 specializes in:\n\n**Intel Categories**:\n• Skills & Technologies\n• Projects & Portfolio\n• Work Experience\n• Education & Research\n• Contact & Availability\n\n**Special Commands**:\n• 'quiz mode' - Test your knowledge\n• 'compare X vs Y' - Comparisons\n• 'random' - Surprise me\n\nWhat interests you?",
+            suggestions: [
+                "Tell me about his skills",
+                "Show me projects",
+                "Start quiz mode",
+                "Something random"
+            ]
+        };
     }
 
-    getRandomResponse(category) {
-        const responses = this.responses[category];
-        if (!responses || responses.length === 0) {
-            return "🕵️ Agent47 ready. Request intel on: skills, experience, projects, or contact protocols.";
-        }
-        return responses[Math.floor(Math.random() * responses.length)];
-    }
-
+    // UI Methods
     addUserMessage(message) {
         const messagesContainer = document.getElementById('chatbot-messages');
         const messageHTML = `
@@ -507,24 +1188,40 @@ class PortfolioBot {
         `;
         messagesContainer.insertAdjacentHTML('beforeend', messageHTML);
         this.scrollToBottom();
-        this.saveChatHistory();
     }
 
-    addBotMessage(message) {
+    addBotMessage(message, suggestions = null) {
         const messagesContainer = document.getElementById('chatbot-messages');
+        
+        let suggestionsHTML = '';
+        if (suggestions && suggestions.length > 0) {
+            suggestionsHTML = '<div class="bot-suggestions">';
+            suggestions.forEach(s => {
+                suggestionsHTML += `<button class="quick-action" data-msg="${s}">${s}</button>`;
+            });
+            suggestionsHTML += '</div>';
+        }
+        
         const messageHTML = `
             <div class="chat-message bot-message">
                 <div class="message-avatar">
-                    <i class="fas fa-robot"></i>
+                    <i class="fas fa-user-secret"></i>
                 </div>
                 <div class="message-content">
-                    <p>${this.escapeHtml(message)}</p>
+                    <p>${this.formatMessage(message)}</p>
+                    ${suggestionsHTML}
                 </div>
             </div>
         `;
         messagesContainer.insertAdjacentHTML('beforeend', messageHTML);
         this.scrollToBottom();
-        this.saveChatHistory();
+    }
+
+    formatMessage(message) {
+        // Convert markdown-style formatting
+        message = message.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        message = message.replace(/\n/g, '<br>');
+        return message;
     }
 
     showTypingIndicator() {
@@ -560,24 +1257,15 @@ class PortfolioBot {
             return;
         }
         
-        const suggestions = [
-            "Tell me about Vinay's skills",
-            "What projects has he worked on?",
-            "Tell me about his experience",
-            "What is his education background?",
-            "How can I contact him?",
-            "Is he available for hire?",
-            "Tell me about his AWS experience",
-            "What ML projects has he done?"
-        ];
-        
-        const filtered = suggestions.filter(s => 
-            s.toLowerCase().includes(input.toLowerCase())
+        // Generate smart suggestions based on input
+        const allQuestions = Object.values(this.questionBank).flat();
+        const filtered = allQuestions.filter(q => 
+            q.toLowerCase().includes(input.toLowerCase())
         ).slice(0, 3);
         
         if (filtered.length > 0) {
             suggestionsContainer.innerHTML = filtered
-                .map(s => `<button class="suggestion-item" onclick="portfolioBot.sendMessage('${s}')">${s}</button>`)
+                .map(s => `<button class="suggestion-item" onclick="agent47.sendMessage('${s}')">${s}</button>`)
                 .join('');
         } else {
             suggestionsContainer.innerHTML = '';
@@ -594,32 +1282,14 @@ class PortfolioBot {
         div.textContent = text;
         return div.innerHTML;
     }
-
-    saveChatHistory() {
-        const messages = document.getElementById('chatbot-messages').innerHTML;
-        localStorage.setItem('agent47-history', messages);
-    }
-
-    loadChatHistory() {
-        const history = localStorage.getItem('agent47-history');
-        if (history) {
-            document.getElementById('chatbot-messages').innerHTML = history;
-        }
-    }
 }
 
-// Initialize chatbot when DOM is ready
-let portfolioBot;
+// Initialize Agent47 Enhanced AI
+let agent47;
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
-        portfolioBot = new PortfolioBot();
-        console.log('%c🕵️ Agent47 System Activated', 'color: #64ffda; font-size: 16px; font-weight: bold;');
-        console.log('%cCodename: Portfolio Intelligence Assistant', 'color: #8892b0; font-size: 12px;');
-        console.log('%cMission: Provide comprehensive intel on Vinay Varshigan', 'color: #8892b0; font-size: 12px;');
+        agent47 = new Agent47AI();
     });
 } else {
-    portfolioBot = new PortfolioBot();
-    console.log('%c🕵️ Agent47 System Activated', 'color: #64ffda; font-size: 16px; font-weight: bold;');
-    console.log('%cCodename: Portfolio Intelligence Assistant', 'color: #8892b0; font-size: 12px;');
-    console.log('%cMission: Provide comprehensive intel on Vinay Varshigan', 'color: #8892b0; font-size: 12px;');
+    agent47 = new Agent47AI();
 }

@@ -473,6 +473,33 @@
     }
 }
 
+/* Bot Suggestions (after messages) */
+.bot-suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(100, 255, 218, 0.1);
+}
+
+.bot-suggestions .quick-action {
+    font-size: 11px;
+    padding: 6px 12px;
+    margin: 0;
+}
+
+/* Question Counter */
+#question-counter {
+    color: var(--accent-primary);
+    font-weight: bold;
+}
+
+/* Mode Indicator */
+#chatbot-mode {
+    transition: var(--transition);
+}
+
 /* Dark mode enhancement */
 @media (prefers-color-scheme: dark) {
     .chatbot-container {
